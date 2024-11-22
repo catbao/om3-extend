@@ -218,7 +218,7 @@ const computeLineTransform: ActionHandler<GlobalState, GlobalState> = (context: 
     const data = get(context.state, combinedUrl);
     data.then(tempRes => {
         console.log(tempRes);
-        if(tempRes['max_value'].length === 1){
+        if(mode == 'compute'){
             const viewChangeQueryObj: ViewChangeLineChartObj = {
                 id: uuidv4(),
                 width: payload.width,
@@ -263,16 +263,17 @@ const computeLineTransform: ActionHandler<GlobalState, GlobalState> = (context: 
                 startTimeStamp: startTimeStamp,
                 endTimeStamp: endTimeStamp,
                 timeIntervalMs: timeInterval,                
-                columnInfos: tempRes, 
+                columnInfos: tempRes['M4_array'], 
                 startTime: 0, 
                 endTime: realDataRowNum - 1, 
                 algorithm: "multitimeseries", 
                 width: payload.width, 
                 height: payload.height, 
                 pow: false, 
-                minv: 0, 
-                maxv: 0, 
-                maxLevel
+                minv: 0,
+                maxv: 0,
+                maxLevel,
+                line1
             })
         }
     });

@@ -129,7 +129,7 @@ export function drawViewChangeLineChart(lineChartObj: ViewChangeLineChartObj, li
     function draw(nonUniformColObjs?: any) {
         canvas.width = lineChartObj.width;
         // yScale = d3.scaleLinear().domain([lineChartObj.data.minv, lineChartObj.data.maxv]).range([lineChartObj.height, 0]);
-        yScale = d3.scaleLinear().domain([-5000, 5000]).range([lineChartObj.height, 0]);
+        yScale = d3.scaleLinear().domain([lineChartObj.minV, lineChartObj.maxV]).range([lineChartObj.height, 0]);
         // yScale = d3.scaleLinear().domain([-finalValue, finalValue]).range([lineChartObj.height, 0]);
         yAxis = d3.axisLeft(yScale)
         if (yAxisG !== null && yAxisG !== undefined) {
@@ -405,8 +405,8 @@ export function drawViewChangeLineChart(lineChartObj: ViewChangeLineChartObj, li
         interactionStack.push(interInfo);
 
         console.log("brush....");
-        let mode = "single";
-        let type = "only_show"
+        let mode = "compute";
+        let type = ""
         let parallel = 0;
         let errorBound = 0;
         
@@ -426,8 +426,8 @@ export function drawViewChangeLineChart(lineChartObj: ViewChangeLineChartObj, li
         canvas.style.width = lineChartObj.width;
 
         console.log("resize....");
-        let mode = "single";
-        let type = "only_show"
+        let mode = "compute";
+        let type = ""
         let parallel = 0;
         let errorBound = 0;
         const combinedUrl = `/line_chart/case1?table_name=${line1[0]}&table_name_others=${line1[1]}&symbol=${line1[2]}&mode=${mode}&width=${lineChartObj.width}&height=${lineChartObj.height}&startTime=${lineChartObj.timeRange[0]}&endTime=${lineChartObj.timeRange[1]}&interact_type=${type}&experiment=${line1[3]}&parallel=${parallel}&errorBound=${errorBound}`;

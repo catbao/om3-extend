@@ -149,7 +149,8 @@ function addMultiTimeSeriesObj(state: GlobalState, info: {
     pow: boolean, 
     minv: number, 
     maxv: number, 
-    maxLevel: number
+    maxLevel: number,
+    line1: any
 }) {
     const multiTImeSeriesObj: MultiTimeSeriesObj = {
         id: uuidv4(),
@@ -174,7 +175,8 @@ function addMultiTimeSeriesObj(state: GlobalState, info: {
         lineAmount: info.lineAmount,
         startTimeStamp: info.startTimeStamp,
         endTimeStamp: info.endTimeStamp,
-        timeIntervalMs: info.timeIntervalMs
+        timeIntervalMs: info.timeIntervalMs,
+        line1: info.line1
     }
     if (info.columnInfos.length > 0) {
         emitter.emit("add_multi_timeseries_obj", multiTImeSeriesObj);

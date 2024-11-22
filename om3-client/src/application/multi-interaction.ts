@@ -199,7 +199,7 @@ let interactionStack: Array<InteractionInfo> = [];
 export function drawMultiTimeSeries(multiTimeSeriesObj: MultiTimeSeriesObj) {
     let realTimeStampRange: Array<number> = [multiTimeSeriesObj.startTimeStamp, multiTimeSeriesObj.endTimeStamp];
     let nodeIndexRange: Array<number> = [multiTimeSeriesObj.timeRange[0], multiTimeSeriesObj.timeRange[1]]
-
+    let rowNumber = 131072;
     let isInit = false;
     let isResizing = false;
     let isRebacking = false;
@@ -234,13 +234,13 @@ export function drawMultiTimeSeries(multiTimeSeriesObj: MultiTimeSeriesObj) {
     const indexToTimeStampScale = d3.scaleLinear().domain([nodeIndexRange[0], nodeIndexRange[1]]).range([realTimeStampRange[0], realTimeStampRange[1]]);
     const xScale: any = d3.scaleLinear().domain([0, multiTimeSeriesObj.width]).range([0, multiTimeSeriesObj.width]);
     // let showTimeXScale: any = d3.scaleTime().domain([new Date(realTimeStampRange[0]), new Date(realTimeStampRange[1])]).range([0, multiTimeSeriesObj.width]);
-    let showTimeXScale: any = d3.scaleLinear().domain([0, 65536]).range([0, multiTimeSeriesObj.width]);
+    let showTimeXScale: any = d3.scaleLinear().domain([0, rowNumber]).range([0, multiTimeSeriesObj.width]);
     let yScale: any = d3.scaleLinear().domain([multiTimeSeriesObj.minv, multiTimeSeriesObj.maxv]).range([multiTimeSeriesObj.height, 0]);
 
     // let xReScale = d3.scaleLinear().domain([0, multiTimeSeriesObj.width]).range([0, multiTimeSeriesObj.dataManagers[0].realDataRowNum - 1]);
     let xReScale = d3.scaleLinear().domain([0, multiTimeSeriesObj.width]).range([0, 65536]);
     // let showXTimeScale: any = d3.scaleTime().domain([new Date(realTimeStampRange[0]), new Date(realTimeStampRange[1])]).range([0, multiTimeSeriesObj.width]);
-    let showXTimeScale: any = d3.scaleLinear().domain([0, 65536]).range([0, multiTimeSeriesObj.width]);
+    let showXTimeScale: any = d3.scaleLinear().domain([0, rowNumber]).range([0, multiTimeSeriesObj.width]);
 
     let zoomAxis = d3.axisBottom(showTimeXScale);
     let yAxis = d3.axisLeft(yScale);
@@ -280,7 +280,7 @@ export function drawMultiTimeSeries(multiTimeSeriesObj: MultiTimeSeriesObj) {
         foreignObj.attr("width", multiTimeSeriesObj.width);
         xScale.domain([0, multiTimeSeriesObj.width]).range([0, multiTimeSeriesObj.width]);
         // showTimeXScale.domain([new Date(realTimeStampRange[0]), new Date(realTimeStampRange[1])]).range([0, multiTimeSeriesObj.width]);
-        showTimeXScale.domain([0, 65536]).range([0, multiTimeSeriesObj.width]);
+        showTimeXScale.domain([0, rowNumber]).range([0, multiTimeSeriesObj.width]);
         if (zoomAxisG != null) {
             zoomAxisG.remove();
             zoomAxisG = svg.append("g").attr('style', 'user-select:none').attr("transform", `translate(${pading.left},${multiTimeSeriesObj.height + pading.top + 50})`).attr("class", 'x axis').call(zoomAxis)
@@ -349,7 +349,7 @@ export function drawMultiTimeSeries(multiTimeSeriesObj: MultiTimeSeriesObj) {
         yAxisG = svg.append("g").attr('style', 'user-select:none').attr("transform", `translate(${pading.left},${pading.top})`).attr("class", 'y axis').call(yAxis);
 
         // showXTimeScale = d3.scaleTime().domain([new Date(Math.floor(indexToTimeStampScale(multiTimeSeriesObj.timeRange[0]))), new Date(Math.floor(indexToTimeStampScale(multiTimeSeriesObj.timeRange[1])))]).range([0, multiTimeSeriesObj.width]);
-        showXTimeScale = d3.scaleLinear().domain([0, 65536]).range([0, multiTimeSeriesObj.width]);
+        showXTimeScale = d3.scaleLinear().domain([0, rowNumber]).range([0, multiTimeSeriesObj.width]);
         xAxis = d3.axisBottom(showXTimeScale);
         if (xAxisG !== null && xAxisG !== undefined) {
             xAxisG.remove();
@@ -413,10 +413,14 @@ export function drawMultiTimeSeries(multiTimeSeriesObj: MultiTimeSeriesObj) {
 
         //@ts-ignore
         canvas.style.width = multiTimeSeriesObj.width
+
         console.log("resize....");
-        // let mode = "multi";
-        // let type = "resize"
-        // const combinedUrl = `/line_chart/testGetDataForMultiLines?mode=${mode}&width=${multiTimeSeriesObj.width}&table_name=${null}&startTime=${0}&endTime=${65536}&nteract_type=${type}`;
+        // let mode = "show";
+        // let type = ""
+        // let parallel = 0;
+        // let errorBound = 0;
+        // let line1 = multiTimeSeriesObj.line1;
+        // const combinedUrl = `/line_chart/case1?table_name=${line1[0]}&table_name_others=${line1[1]}&symbol=${line1[2]}&mode=${mode}&width=${multiTimeSeriesObj.width}&height=${multiTimeSeriesObj.height}&startTime=${multiTimeSeriesObj.timeRange[0]}&endTime=${multiTimeSeriesObj.timeRange[1]}&interact_type=${type}&experiment=${line1[3]}&parallel=${parallel}&errorBound=${errorBound}`;
         // const showColumns = await get(combinedUrl);
         // multiTimeSeriesObj.columnInfos = showColumns;
         // draw();
@@ -435,9 +439,12 @@ export function drawMultiTimeSeries(multiTimeSeriesObj: MultiTimeSeriesObj) {
 
         const needLoadLevel = 2 ** Math.ceil(Math.log2(width))
         console.log("zoomIn....");
-        let mode = "multi";
-        let type = "zoomIn"
-        const combinedUrl = `/line_chart/testGetDataForMultiLines?mode=${mode}&width=${multiTimeSeriesObj.width}&table_name=${null}&startTime=${0}&endTime=${65536}&nteract_type=${type}`;
+        let mode = "show";
+        let type = ""
+        let parallel = 0;
+        let errorBound = 0;
+        let line1 = multiTimeSeriesObj.line1;
+        const combinedUrl = `/line_chart/case1?table_name=${line1[0]}&table_name_others=${line1[1]}&symbol=${line1[2]}&mode=${mode}&width=${multiTimeSeriesObj.width}&height=${multiTimeSeriesObj.height}&startTime=${multiTimeSeriesObj.timeRange[0]}&endTime=${multiTimeSeriesObj.timeRange[1]}&interact_type=${type}&experiment=${line1[3]}&parallel=${parallel}&errorBound=${errorBound}`;
         const showColumns = await get(combinedUrl);
         multiTimeSeriesObj.columnInfos = showColumns;
         draw();

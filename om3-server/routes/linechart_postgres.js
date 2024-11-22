@@ -665,7 +665,8 @@ async function Case1(req, res){
     console.log('Case1')
     let table_name1=req.query['table_name']
     let table_name_others=req.query['table_name_others']
-    let symble = req.query['symbol']
+    // let symble = req.query['symbol']
+    let symble = '+'; //test
     let mode = req.query['mode'] //compute or show/multi
     let width= req.query['width']
     let height = req.query['height']
@@ -736,31 +737,31 @@ async function Case1(req, res){
             max_value: max_values
         })
     }
-
-    let result = []
-    for(let i=0;i<dataLength;i++){
-        let computeData = []
-        for(let j=0;j<results.length;j++){
-            computeData.push(results[j][i].v)
+    else{   
+        let result = []
+        for(let i=0;i<dataLength;i++){
+            let computeData = []
+            for(let j=0;j<results.length;j++){
+                computeData.push(results[j][i].v)
+            }
+            let v = compute(computeData, funInfo, interact_type)
+            let pair = { t: results[0][i].t, v: v };
+            result.push(pair)
         }
-        let v = compute(computeData, funInfo, interact_type)
-        let pair = { t: results[0][i].t, v: v };
-        result.push(pair)
+
+        let {M4_array: M4_array, min_value: min_value, max_value: max_value} = generateM4(result, width, startTime, endTime);
+        M4_arrays.push(M4_array);
+        min_values.push(min_value);
+        max_values.push(max_value);
+
+        // outputM4(M4_array)
+
+        res.send({
+            M4_array: M4_arrays,
+            min_value: min_values,
+            max_value: max_values
+        })
     }
-
-    let {M4_array: M4_array, min_value: min_value, max_value: max_value} = generateM4(result, width, startTime, endTime);
-
-    M4_arrays.push(M4_array);
-    min_values.push(min_value);
-    max_values.push(max_value);
-
-    // outputM4(M4_array)
-
-    res.send({
-        M4_array: M4_arrays,
-        min_value: min_values,
-        max_value: max_values
-    })
 }
 
 async function om3(req, res){

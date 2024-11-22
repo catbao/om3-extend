@@ -180,6 +180,7 @@ export interface MultiTimeSeriesObj {
   startTimeStamp: number,
   endTimeStamp: number,
   timeIntervalMs: number,
+  line1: any
 }
 
 export interface MultiHaarTimeSeriesObj {
